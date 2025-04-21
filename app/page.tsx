@@ -1,102 +1,171 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { GraduationCap, Users, Settings } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+
+const images = [
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHjWuSTj0zRnCpRGH_Pmfuqfv4GWL2Gup2wQ&s",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsXKZsltR0a6i4iD6NvsL7YXg5-8nry3QlXA&s",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDPtRqtfNQupzzSQp2F5ZgTc7GtYyjk1nhtA&s",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQassaXz3hSmc94uAJgySxNMqCY-_zIM3yx1Peq8TDWCx17bslB_ZvkVkr_eeGlpFTfooY&usqp=CAU",
+];
+
+export default function HomePage() {
+  const router = useRouter();
+
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => prevIndex % images.length);
+    }, 2000); // Change image every 3 seconds
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
+
+  const moveSlide = (direction: number) => {
+    setIndex(
+      (prevIndex) => (prevIndex + direction + images.length) % images.length
+    );
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <div className="bg-gradient-to-b from-white to-violet-100 min-h-screen p-5">
+      <nav className="flex justify-between items-center p-5 bg-white shadow-lg rounded-2xl">
+        <h1 className="text-2xl font-bold text-violet-700">
+          National Institute of Technology Jamshedpur
+        </h1>
+        <img
+          src="https://upload.wikimedia.org/wikipedia/en/7/7d/National_Institute_of_Technology%2C_Jamshedpur_Logo.png"
+          alt="NIT JSR Logo"
+          className="w-24"
         />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+      </nav>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+      <div className="relative w-4/5 mx-auto overflow-hidden border-4 border-violet-300 rounded-2xl p-2 bg-white mt-6 shadow-xl">
+        <Button
+          onClick={() => moveSlide(-1)}
+          className="absolute top-1/2 left-2 -translate-y-1/2 bg-violet-600 text-white rounded-full"
+        >
+          &#10094;
+        </Button>
+        <div
+          className="flex transition-transform duration-500 ease-in-out"
+          style={{ transform: `translateX(${-index * 100}%)` }}
+        >
+          {images.map((src, i) => (
+            <img
+              key={i}
+              src={src}
+              alt="Campus"
+              className="h-[70vh] w-full rounded-xl object-cover"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        <Button
+          onClick={() => moveSlide(1)}
+          className="absolute top-1/2 right-2 -translate-y-1/2 bg-violet-600 text-white rounded-full"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+          &#10095;
+        </Button>
+      </div>
+
+      <div className="flex flex-wrap justify-center gap-6 my-10">
+        {[
+          {
+            title: "For Students",
+            icon: <GraduationCap className="text-violet-700 w-10 h-10" />,
+            onClick: () => router.push("/student/login"),
+          },
+          {
+            title: "For Faculty",
+            icon: <Users className="text-violet-700 w-10 h-10" />,
+            onClick: () => router.push("/faculty/login"),
+          },
+          {
+            title: "For Administrator",
+            icon: <Settings className="text-violet-700 w-10 h-10" />,
+            onClick: () => router.push("/admin/login"),
+          },
+        ].map((item, i) => (
+          <Card
+            key={i}
+            className="w-80 text-center hover:bg-violet-50 cursor-pointer"
+            onClick={item.onClick}
+          >
+            <CardContent className="flex flex-col items-center p-6">
+              {item.icon}
+              <p className="text-violet-700 font-semibold text-lg mt-3">
+                {item.title}
+              </p>
+              <p className="mt-2 text-gray-600">
+                Find all resources for {item.title.toLowerCase()} in one place!
+              </p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <div className="container mx-auto px-4">
+        <div className="bg-violet-700 text-white p-10 rounded-2xl shadow-md">
+          <h2 className="text-3xl font-bold">NIT Jamshedpur by the Numbers</h2>
+          <div className="flex flex-wrap justify-center gap-6 mt-6">
+            {[
+              { icon: "👨‍🎓", text: "2,105 Undergraduate Students" },
+              { icon: "🎓", text: "4,112 Postgraduate Students" },
+              { icon: "🔬", text: "746 MS Research Scholars" },
+              { icon: "📖", text: "2,963 PhD Research Scholars" },
+              { icon: "👨‍🏫", text: "591 Faculty" },
+              { icon: "👥", text: "677 Staff" },
+              { icon: "🏅", text: "146 Patents" },
+              { icon: "📊", text: "829 Projects" },
+            ].map((stat, i) => (
+              <p
+                key={i}
+                className="text-lg font-medium flex items-center gap-2"
+              >
+                <span>{stat.icon}</span> {stat.text}
+              </p>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-gray-900 text-white p-10 mt-8 rounded-2xl shadow-md">
+          <h2 className="text-3xl font-bold">Departments</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+            {[
+              "Aerospace Engineering",
+              "Applied Mechanics",
+              "Biotechnology",
+              "Chemical Engineering",
+              "Chemistry",
+              "Civil Engineering",
+              "Computer Science and Engineering",
+              "Data Science & Artificial Intelligence",
+              "Electrical Engineering",
+              "Engineering Design",
+              "Humanities and Social Sciences",
+              "Management Studies",
+              "Mathematics",
+              "Mechanical Engineering",
+              "Medical Science and Technology",
+              "Metallurgical and Materials Engineering",
+              "Ocean Engineering",
+              "Physics",
+            ].map((dept, i) => (
+              <p key={i} className="text-lg font-medium">
+                {dept}
+              </p>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <footer className="bg-gray-900 text-white text-center p-5 mt-10 rounded-xl shadow-md">
+        <p>&copy; 2025 NIT Jamshedpur. All rights reserved.</p>
       </footer>
     </div>
   );
