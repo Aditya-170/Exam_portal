@@ -128,7 +128,7 @@ export default function HomePage() {
           {
             title: "For Administrator",
             icon: <Settings className="text-violet-700 w-10 h-10" />,
-            onClick: () => router.push("/admin/login"),
+            onClick: () => router.push("http://127.0.0.1:5000/login"),
           },
         ].map((item, i) => (
           <Card

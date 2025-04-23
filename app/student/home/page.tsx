@@ -156,7 +156,7 @@ export default function StudentDashboard() {
         <div className="flex flex-col items-center border-b-4 pb-6">
           <div className="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
             <Image
-              src="/default-profile.png" 
+              src="/default-profile.jpg" 
               alt="Profile Pic"
               width={128}
               height={128}

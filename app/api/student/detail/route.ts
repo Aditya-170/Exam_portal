@@ -7,11 +7,13 @@ import jwt from 'jsonwebtoken';
 
 const SECRET = process.env.JWT_SECRET || 'your-secret'; 
 
-
 function getUserIdFromToken(token: string) {
   try {
-    const decoded = jwt.verify(token, SECRET) as { userId: string };
-    return decoded.userId;
+ //   console.log("secret",SECRET)
+    const decoded = jwt.verify(token, SECRET) as { id: string };
+  //  console.log("decoded" , decoded)
+   // console.log("userid checking",decoded.id)
+    return decoded.id;
   } catch {
     return null;
   }
@@ -28,8 +30,9 @@ export async function GET(req: NextRequest) {
     console.log('authHeader:', authHeader);
     console.log('Token:', authHeader.split(' ')[1]);
 
-    const token = authHeader.split(' ')[1]; 
-    const userId = getUserIdFromToken(token);
+    const token = authHeader.split(' ')[1];
+   // console.log("ujjwal" , token) 
+    const userId = await getUserIdFromToken(token);
  
     if (!userId) {
       return NextResponse.json({ message: 'Invalid token' }, { status: 401 });
